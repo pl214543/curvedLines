@@ -3,5 +3,6 @@ https://github.com/silenc3502/PyAdvancedLane - calculating radius of curvature
 https://www.geeksforgeeks.org/python-opencv-cv2-polylines-method/ - lines that aren't straight
 https://arxiv.org/pdf/1501.03124.pdf - very great ideas for algorithms.
 https://www.hackster.io/kemfic/curved-lane-detection-34f771 - could potentially work
+https://mv.in.tum.de/_media/members/steger/publications/1996/icpr-96-steger.pdf
 
 TRY FOURTH OF A CIRCLE
