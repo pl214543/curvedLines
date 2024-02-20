@@ -1,9 +1,8 @@
-# try cv2.drawContours()
+# IN-CODE CITATIONS
 
 # import required libraries
 import cv2
 import numpy as num
-import math
 
 # import functions
 from reader import rectangle, crop
@@ -13,52 +12,63 @@ from lineDraw import drawing, contours
 # video capture
 video = cv2.VideoCapture(0)
 
+# test case
 print(video.isOpened())
 
 # check if the video is opened
+while video.isOpened():
 
-while video.isOpened() == True:
+    # gets the frame from the video to draw on
     booleanReady, frame = video.read()
 
-    #print(booleanReady)
-    #print(frame)
-
+    # retrieves the height and width of the frame for masking
     height, width = frame.shape[:2]
 
+    # creates a rectangle with background of 0s for masking
     zerosRectangle = num.zeros((height, width), dtype="uint8")
 
+    # defines coordinates for masking as percentage of camera view so compatible with any camera
     topleftx = int(width * 0.175)
     toplefty = int(height * 0.725)
     bottomrightx = int(width * 0.85)
     bottomrighty = int(height * 0.25)
 
+    # creates list of those coordinates for drawing the rectangles and masking later, easy to use as parameters
     varList = [topleftx, toplefty, bottomrightx, bottomrighty]
 
     # grayscale
     grey = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
     # uses the functions from the other files to optimize, make a rectangle, and crop
+    # optimize will employ Gaussian Blur and Canny Edge Detection
     optimized = optimize(grey)
-    rectangled = rectangle(frame, varList)
+
+    # cropped will create the mask
     cropped = crop(optimized, zerosRectangle, varList)
 
-    # detect the lines
+    # detect the lines using HoughLines
     lines = cv2.HoughLines(cropped, 1, num.pi/180, 200)
 
-    # print(lines)
+    # calls the contours function to detect contours and draw
+    contoured = contours(cropped, frame)
 
-    contoured = contours(cropped, rectangled)
     # look up how to compare two vectors
 
     # draw the final lines
     # final = drawing(rectangled, lines)
 
-    # print(final)
+    # rectangled will draw the rectangle around the mask. it is put after others so contours doesn't detect the rectangle
+    rectangled = rectangle(contoured, varList)
 
+    # display the frame, creating a video
     cv2.imshow('Frame', contoured)
 
+    # closes the window when 'q' is pressed
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
+# releases the video capture
 video.release()
+
+# closes the video
 cv2.destroyAllWindows()
