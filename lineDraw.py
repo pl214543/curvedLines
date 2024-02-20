@@ -2,6 +2,8 @@
 import cv2
 import numpy as num
 
+count = 0
+
 def drawing(frame, lines):
     if lines is not None:
         for r_theta in lines:
@@ -33,11 +35,16 @@ def drawing(frame, lines):
 
             # cv2.line draws a line on the frame
             cv2.line(frame, (x1, y1), (x2, y2), (0, 0, 255), 2)
-            cv2.line(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
 
     return frame
 
 def contours(frame, rectangled):
     contours, hierarchy = cv2.findContours(frame, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+
+    if count == 0:
+        vectorA = contours
+        vectorB = contours
+
+
     cv2.drawContours(rectangled, contours, -1, (0, 255, 0), 3)
     return rectangled
