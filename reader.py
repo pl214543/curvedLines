@@ -7,6 +7,7 @@ def rectangle(frame, varList):
     # draws rectangle
     rectangled = cv2.rectangle(frame, (varList[0], varList[1]), (varList[2], varList[3]), 255, 3)
 
+    
     return rectangled
 
 def crop(frame, zerosRectangle, varList):
