@@ -6,10 +6,10 @@ import numpy as num
 def rectangle(frame, varList):
 
     # draws rectangle on the frame so that the user knows where the mask is
-    rectangled = cv2.rectangle(frame, (varList[0], varList[1]), (varList[2], varList[3]), 255, 3)
+    addRectangle = cv2.rectangle(frame, (varList[0], varList[1]), (varList[2], varList[3]), 255, 3)
 
-    # returns rectangled variable
-    return rectangled
+    # returns addRectangle variable
+    return addRectangle
 
 # crop function for employing the mask so that contours and lines are only detected within a defined space
 def crop(frame, zerosRectangle, varList):
@@ -22,4 +22,3 @@ def crop(frame, zerosRectangle, varList):
 
     # returns the masked image for detection
     return cropped
-    
