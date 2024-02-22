@@ -1,4 +1,4 @@
-# IN-CODE CITATIONS
+# LINES NOTATED
 
 # import required libraries
 import cv2
@@ -28,13 +28,13 @@ while video.isOpened():
     zerosRectangle = num.zeros((height, width), dtype="uint8")
 
     # defines coordinates for masking as percentage of camera view so compatible with any camera
-    topleftx = int(width * 0.175)
-    toplefty = int(height * 0.725)
-    bottomrightx = int(width * 0.85)
-    bottomrighty = int(height * 0.25)
+    topLeftX = int(width * 0.175)
+    topLeftY = int(height * 0.725)
+    bottomRightX = int(width * 0.85)
+    bottomRightY = int(height * 0.25)
 
     # creates list of those coordinates for drawing the rectangles and masking later, easy to use as parameters
-    varList = [topleftx, toplefty, bottomrightx, bottomrighty]
+    varList = [topLeftX, topLeftY, bottomRightX, bottomRightY]
 
     # grayscale
     grey = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
@@ -48,6 +48,7 @@ while video.isOpened():
 
     # detect the lines using HoughLines
     lines = cv2.HoughLines(cropped, 1, num.pi/180, 200)
+    # linesP = cv2.HoughLinesP(cropped, 1, num.pi/180, 200, 5, 5)
 
     # calls the contours function to detect contours and draw
     contoured = contours(cropped, frame)
@@ -55,13 +56,15 @@ while video.isOpened():
     # look up how to compare two vectors
 
     # draw the final lines
-    # final = drawing(rectangled, lines)
+    # final = drawing(addRectangle, lines)
 
-    # rectangled will draw the rectangle around the mask. it is put after others so contours doesn't detect the rectangle
-    rectangled = rectangle(contoured, varList)
+    # final = probablistic(addRectangle, linesP)
+
+    # addRectangle will draw the rectangle around the mask. put after others so contours doesn't detect the rectangle
+    addRectangle = rectangle(contoured, varList)
 
     # display the frame, creating a video
-    cv2.imshow('Frame', contoured)
+    cv2.imshow('Frame', addRectangle)
 
     # closes the window when 'q' is pressed
     if cv2.waitKey(1) & 0xFF == ord('q'):
