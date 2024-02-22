@@ -7,5 +7,6 @@ https://mv.in.tum.de/_media/members/steger/publications/1996/icpr-96-steger.pdf
 https://www.geeksforgeeks.org/find-and-draw-contours-using-opencv-python/ - Find and Draw Contours
 https://www.geeksforgeeks.org/check-if-given-vectors-are-parallel-or-perpendicular/ - Checking if the vectors are perpendicular
 https://pyimagesearch.com/2021/01/19/opencv-bitwise-and-or-xor-and-not/ - Using bitwise operators
+https://www.geeksforgeeks.org/find-co-ordinates-of-contours-using-opencv-python/ - finding points of contours
 
 TRY FOURTH OF A CIRCLE
