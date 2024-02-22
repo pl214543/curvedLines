@@ -2,7 +2,7 @@
 import cv2
 import numpy as num
 
-count = 0
+# import drawing function
 
 # function for drawing the straight lines
 def drawing(frame, lines):
@@ -52,13 +52,35 @@ def contours(frame, rectangled):
     # finds the contours and hierarchy (order)
     contours, hierarchy = cv2.findContours(frame, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
 
-    # could be how I will find distance between contours
-    if count == 0:
-        vectorA = contours
-        vectorB = contours
+    midpointList = []
 
     # draws the contours on the frame
-    cv2.drawContours(rectangled, contours, -1, (0, 255, 0), 3)
+    # cv2.drawContours(rectangled, contours, -1, (0, 255, 0), 3)
 
-    # returns the final edited frame with contours
+    for contour in contours:
+
+        approx = cv2.approxPolyDP(contour, 0.009 * cv2.arcLength(contour, True), True)
+
+        cv2.drawContours(rectangled, [approx], 0, (0, 0, 255), 5)
+
+        n = approx.ravel()
+        i = 0
+
+        for j in n:
+            if (i % 2 == 0):
+                x = n[i]
+                y = n[i + 1]
+
+                # String containing the co-ordinates.
+                string = str(x) + " " + str(y)
+
+                if (i == 0):
+                    # text on topmost co-ordinate.
+                    cv2.putText(rectangled, "Arrow tip", (x, y),
+                                cv2.FONT_HERSHEY_COMPLEX , 0.5, (255, 0, 0))
+                else:
+                    midpointList.append(string)
+            i = i + 1
+
+        # returns the final edited frame with contours
     return rectangled
