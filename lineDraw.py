@@ -60,9 +60,11 @@ def contours(frame, addRectangle):
 
     for contour in contours:
 
-        approx = cv2.approxPolyDP(contour, 0.001 * cv2.arcLength(contour, True), True)
+        approx = cv2.approxPolyDP(contour, 0.004 * cv2.arcLength(contour, True), True)
 
-        cv2.drawContours(addRectangle, [approx], 0, (0, 255, 0), 5)
+        cv2.drawContours(addRectangle, [approx], 0, (0, 255, 0), 10)
+
+        # use fill poly?
 
         n = approx.ravel()
         i = 0
@@ -82,7 +84,7 @@ def contours(frame, addRectangle):
 
             i = i + 1
 
-        distanceEqual = distance(frame, pointsList)
+        # distanceEqual = distance(frame, pointsList)
 
         # returns the final edited frame with contours
     return addRectangle
