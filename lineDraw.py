@@ -35,6 +35,7 @@ def contours(frame, addRectangle):
         n = contour.ravel()
         i = 0
 
+        #  https://www.geeksforgeeks.org/find-co-ordinates-of-contours-using-opencv-python/
         # goes through every point in the contour
         for j in n:
             if i % 2 == 0:
