@@ -1,51 +1,10 @@
 # import required libraries
 import cv2
 import numpy as num
+from parallelCheck import findParallels
 
 # import distance function
-from distanceDetect import distance
-
-# function for drawing the straight lines
-def drawing(frame, lines):
-
-    # checks if anything is in the list of lines (do any lines exist) so no errors appear
-    if lines is not None:
-
-        # HoughLines returns theta values so it iterates through them all to find all lines
-        for r_theta in lines:
-
-            arr = num.array(r_theta[0], dtype=num.float64)
-
-            r, theta = arr
-            # Stores the value of cos(theta) in a
-            a = num.cos(theta)
-
-            # b stores the value of sin(theta) in b
-            b = num.sin(theta)
-
-            # x0 stores the value rCos(theta)
-            x0 = a * r
-
-            # y0 stores the value rSin(theta)
-            y0 = b * r
-
-            # x1 variable for the final line
-            x1 = int(x0 + 1000 * (-b))
-
-            # y1 variable for the final line
-            y1 = int(y0 + 1000 * a)
-
-            # x2 variable for the final line
-            x2 = int(x0 - 1000 * (-b))
-
-            # y2 variable for the final line
-            y2 = int(y0 - 1000 * a)
-
-            # cv2.line draws a line on the frame
-            cv2.line(frame, (x1, y1), (x2, y2), (0, 0, 255), 2)
-
-    # returns the frame with lines drawn
-    return frame
+# from distanceDetect import distance
 
 # function for drawing contours
 def contours(frame, addRectangle):
@@ -53,38 +12,57 @@ def contours(frame, addRectangle):
     # finds the contours and hierarchy (order)
     contours, hierarchy = cv2.findContours(frame, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
 
+    # https://stackoverflow.com/questions/32669415/opencv-ordering-a-contours-by-area-python
+    contoursSorted = sorted(contours, key=lambda x: cv2.contourArea(x))
+
+    # creates lists of points
     pointsList = []
+    midPoints1 = []
+    midPoints = []
 
-    # draws the contours on the frame
-    # cv2.drawContours(addRectangle, contours, -1, (0, 255, 0), 3)
+    # creates variables for averages.
+    averageX = 0
+    averageY = 0
 
+    # gets each contour
     for contour in contours:
 
-        approx = cv2.approxPolyDP(contour, 0.004 * cv2.arcLength(contour, True), True)
-
-        cv2.drawContours(addRectangle, [approx], 0, (0, 255, 0), 10)
+        # draws each contour
+        cv2.drawContours(addRectangle, [contour], 0, (0, 255, 0), 10)
 
         # use fill poly?
 
-        n = approx.ravel()
+        n = contour.ravel()
         i = 0
 
+        # goes through every point in the contour
         for j in n:
             if i % 2 == 0:
                 x = n[i]
                 y = n[i + 1]
 
-                if i == 0:
-                    pass
+                # appends the points to pointsList
+                pointsList.append([x, y])
 
-                else:
-
-                    # appends the point to a list
-                    pointsList.append([x, y])
-
+            # for iteration
             i = i + 1
 
-        # distanceEqual = distance(frame, pointsList)
+    # iterates through contours again
+    for j in contours:
+        
+        # tries to get the averages
+        for i in range(len(pointsList)):
+            averageX += pointsList[i][0]
+            averageY += pointsList[i][1]
 
-        # returns the final edited frame with contours
+        averageX = averageX / len(pointsList)
+        averageY = averageY / len(pointsList)
+
+    # adds averages to midpoint list
+    midPoints.append([int(averageX), int(averageY)])
+
+    # draws the center line
+    addRectangle = cv2.polylines(addRectangle, [num.array(midPoints)],
+                          True, (255, 0, 0), 5)
+
     return addRectangle
