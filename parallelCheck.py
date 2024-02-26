@@ -75,6 +75,7 @@ def findParallels(lines):
     nonparallels = []
 
     # iterates through the lines
+    # https://stackoverflow.com/questions/15780210/python-opencv-detect-parallel-lines
     for i in range(len(lines)):
         for j in range(len(lines)):
             if i == j: continue
