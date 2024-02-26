@@ -7,10 +7,10 @@ import numpy as num
 # import functions
 from reader import rectangle, crop
 from optimization import optimize
-from lineDraw import drawing, contours
+from lineDraw import contours
 
 # video capture
-video = cv2.VideoCapture(0)
+video = cv2.VideoCapture(1)
 
 # test case
 print(video.isOpened())
@@ -46,19 +46,8 @@ while video.isOpened():
     # cropped will create the mask
     cropped = crop(optimized, zerosRectangle, varList)
 
-    # detect the lines using HoughLines
-    lines = cv2.HoughLines(cropped, 1, num.pi/180, 200)
-    # linesP = cv2.HoughLinesP(cropped, 1, num.pi/180, 200, 5, 5)
-
     # calls the contours function to detect contours and draw
     contoured = contours(cropped, frame)
-
-    # look up how to compare two vectors
-
-    # draw the final lines
-    # final = drawing(addRectangle, lines)
-
-    # final = probablistic(addRectangle, linesP)
 
     # addRectangle will draw the rectangle around the mask. put after others so contours doesn't detect the rectangle
     addRectangle = rectangle(contoured, varList)
